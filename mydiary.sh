@@ -2,6 +2,79 @@
 
 clear
 
+echo "Do you need to lock/unlock your diary before opening?"
+
+echo "Y/N"
+
+read lockunlock
+
+if [[ $lockunlock == "y" ]]; then
+
+#To unlock
+
+echo "Would you like to unlock your diary?"
+
+read theiranser
+
+if [[ $theiranser == "y" ]]; then 
+
+echo "Enter password to unlock diary: "
+
+openssl enc -in diary.txt.enc \
+    -d -aes-256-cbc \
+    -pass stdin > diary.txt
+
+rm diary.txt.enc
+
+echo "Unlocked."
+
+else
+
+echo "No problem, you Diary is locked."
+
+fi
+
+
+#To lock
+
+echo "Would you like to lock your diary?"
+
+read theiranser
+
+if [[ $theiranser == "y" ]]; then
+
+echo "Enter password to lock diary: "
+
+openssl enc -in diary.txt \
+    -aes-256-cbc \
+    -pass stdin > diary.txt.enc
+
+echo "Locked."
+
+rm diary.txt
+
+else 
+
+echo "No problem, your Diary is unlocked."
+
+fi
+
+else
+
+echo "cool."
+
+fi
+
+echo "Start Diary?"
+
+echo "Y/N"
+
+read startdiaryy
+
+if [[ $startdiaryy == "y" ]]; then
+
+clear
+
 ddate=$(date +"%m-%d-%Y")
 
 echo "-- ** Welcome to your Diary ** --"
@@ -12,7 +85,7 @@ echo "Great, the date is: $ddate"
 
 espeak "How is your day, Austin?"
 
-echo "How is your day, Austin?"
+echo "How is your day, Austin? (good/bad)"
 
 read howis
 
@@ -23,8 +96,8 @@ echo "Wonderful!"
 
 elif [[ "$howis" == "bad" ]]; then
 
-espeak "Sorry to hear it"
-echo "Sorry to hear it"
+espeak "Sorry to hear it, that's bullocks."
+echo "Sorry to hear it, that's bullocks."
 
 else 
 
@@ -41,6 +114,22 @@ echo "Y/N: "
 read diaryentry
 
 if [[ "$diaryentry" == "y" ]]; then
+
+#To unlock
+
+espeak "Please unlock your diary, Austin."
+echo "Please unlock your diary, Austin."
+
+echo "Enter password to unlock diary: "
+
+openssl enc -in diary.txt.enc \
+    -d -aes-256-cbc \
+    -pass stdin > diary.txt
+
+echo "Unlocked."
+
+rm diary.txt.enc
+
 
 espeak "Perfect, what would you like to record today, Austin?"
 echo "Perfect, what would you like to record today, Austin?"
@@ -65,8 +154,6 @@ echo "           " >> diary.txt
 
 espeak "Entry saved!"
 echo "Entry saved!"
-espeak "Entry complete."
-echo "Entry complete."
 
 else 
 
@@ -83,12 +170,51 @@ read opendiary
 
 if [[ "$opendiary" == "y" ]]; then
 
+#To unlock
+
+echo "Would you like to unlock your diary?"
+
+read theiranser
+
+if [[ $theiranser == "y" ]]; then 
+
+echo "Enter password to unlock diary: "
+
+openssl enc -in diary.txt.enc \
+    -d -aes-256-cbc \
+    -pass stdin > diary.txt
+
+rm diary.txt.enc
+
+echo "Unlocked."
+
+else
+
+echo "No problem, you Diary is locked."
+
+fi
+
 xdg-open ./diary.txt
 
 else 
 
 espeak "Okay, no problem."
 echo "Okay, no problem."
+
+#To lock
+
+espeak "Please lock your Diary."
+echo "Please lock your Diary."
+
+echo "Enter password to lock diary: "
+
+openssl enc -in diary.txt \
+    -aes-256-cbc \
+    -pass stdin > diary.txt.enc
+
+echo "Locked."
+
+rm diary.txt
 
 fi
 
@@ -101,14 +227,46 @@ read runagain
 
 if [[ $runagain == "y" ]]; then 
 
+espeak "Did you open your Diary earlier?"
+echo "Did you open your Diary earlier?"
+
+echo "Y/N"
+
+read didopendiary
+
+if [[ $didopendiary == "y" ]]; then
+
+#To lock
+
+espeak "Please lock your Diary."
+echo "Please lock your Diary."
+
+echo "Enter password to lock diary: "
+
+openssl enc -in diary.txt \
+    -aes-256-cbc \
+    -pass stdin > diary.txt.enc
+
+echo "Locked."
+
+rm diary.txt
+
 bash mydiary.sh
 
 else 
 
-espeak "Okay, no problem, how about a random quote?"
-echo "Okay, no problem, how about a random quote?"
+bash mydiary.sh
 
 fi
+
+else 
+
+echo "Okay."
+
+fi
+
+espeak "Would you like to hear a adage? They are fun!"
+echo "Would you like to hear a adage? They are fun!"
 
 echo "Y/N"
 
@@ -127,10 +285,46 @@ echo "Okay, your loss."
 
 fi
 
+espeak "Did you open your Diary earlier?"
+echo "Did you open your Diary earlier?"
+
+echo "Y/N"
+
+read didopendiary
+
+if [[ $didopendiary == "y" ]]; then
+
+#To lock
+
+espeak "Please lock your Diary."
+echo "Please lock your Diary."
+
+echo "Enter password to lock diary: "
+
+openssl enc -in diary.txt \
+    -aes-256-cbc \
+    -pass stdin > diary.txt.enc
+
+echo "Locked."
+
+rm diary.txt
+
+fi
+
 echo "See ya!"
 espeak "See ya!"
 
+clear
+
 exit 
+
+else 
+
+echo "Enjoy your day! :-)"
+
+clear
+
+fi
 
 
 
